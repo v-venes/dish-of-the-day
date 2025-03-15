@@ -1,0 +1,11 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
+
+# Go
+apps/get-recipe/bootstrap
+apps/get-recipe/function.zip
+
+.DS_Store
