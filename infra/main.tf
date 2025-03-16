@@ -4,14 +4,23 @@ provider "aws" {
 
 module "recipes_lambda" {
   source        = "./modules/lambda"
-  function_name = "GetRecipe"
+  function_name = "${var.project_name}-get-recipes"
   handler       = "bootstrap"
   filename      = "../apps/get-recipe/function.zip"
   runtime       = "provided.al2"
+
+  tags = merge(var.tags, {
+    Name = "${var.project_name}-get-recipes"
+  })
+
 }
 
 resource "aws_api_gateway_rest_api" "recipes_api" {
-  name = "RecipesAPI"
+  name = "${var.project_name}-recipes-api"
+
+  tags = merge(var.tags, {
+    Name = "${var.project_name}-recipes-api"
+  })
 }
 
 resource "aws_api_gateway_resource" "resource" {
@@ -90,7 +99,7 @@ resource "aws_api_gateway_stage" "prod" {
 }
 
 resource "aws_api_gateway_usage_plan" "usage_plan" {
-  name = "RecipesUsagePlan"
+  name = "${var.project_name}-recipes-api-usage-plan"
 
   throttle_settings {
     rate_limit  = 5  # 10 requisições por segundo
@@ -104,7 +113,7 @@ resource "aws_api_gateway_usage_plan" "usage_plan" {
 }
 
 resource "aws_api_gateway_api_key" "recipes_api_key" {
-  name = "RecipesAPIKey"
+  name = "${var.project_name}-recipes-api-key"
 }
 
 resource "aws_api_gateway_usage_plan_key" "usage_plan_key" {
@@ -122,7 +131,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
 }
 
 resource "aws_dynamodb_table" "recipes" {
-  name         = "Recipes"
+  name         = "${var.project_name}-recipes-db"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 
@@ -130,4 +139,8 @@ resource "aws_dynamodb_table" "recipes" {
     name = "id"
     type = "S"
   }
+
+  tags = merge(var.tags, {
+    Name = "${var.project_name}-recipes-db"
+  })
 }

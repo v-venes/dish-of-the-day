@@ -6,6 +6,8 @@ resource "aws_lambda_function" "this" {
   role          = aws_iam_role.lambda_exec.arn
 
   publish = true
+
+  tags = var.tags
 }
 
 resource "aws_iam_role" "lambda_exec" {
