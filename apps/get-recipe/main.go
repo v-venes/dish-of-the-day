@@ -1,8 +1,8 @@
 package main
 
 import (
-    "context"
-    "github.com/aws/aws-lambda-go/lambda"
+	"context"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 func handler(ctx context.Context) (string, error) {
@@ -17,9 +17,9 @@ func handler(ctx context.Context) (string, error) {
 	// salvar o retorno no dynamo
 
 	// retornar
-    return "Hello, World!", nil
+	return "Hello, World!", nil
 }
 
 func main() {
-    lambda.Start(handler)
+	lambda.Start(handler)
 }
